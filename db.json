@@ -1,4 +1,27 @@
 {
+  "users": [
+    {
+      "id": "user-gov-1",
+      "name": "R. Mehta",
+      "email": "admin@jharkhand.gov.in",
+      "role": "government",
+      "institution": null
+    },
+    {
+      "id": "user-uni-1",
+      "name": "Dr. Sharma",
+      "email": "sharma@bitmesra.ac.in",
+      "role": "university",
+      "institution": "BIT Mesra"
+    },
+    {
+      "id": "user-cit-1",
+      "name": "Demo Citizen",
+      "email": "citizen@example.com",
+      "role": "citizen",
+      "institution": null
+    }
+  ],
   "problems": [
     {
       "id": "SIP-1024",
@@ -9,7 +32,8 @@
       "submittedDate": "2026-09-04",
       "institution": "BIT Mesra",
       "priority": "High",
-      "confidence": 97
+      "confidence": 97,
+      "submitter_id": "user-cit-1"
     },
     {
       "id": "SIP-1019",
@@ -20,7 +44,8 @@
       "submittedDate": "2026-09-04",
       "institution": "Birsa Agricultural University",
       "priority": "High",
-      "confidence": 92
+      "confidence": 92,
+      "submitter_id": "user-cit-1"
     },
     {
       "id": "SIP-1008",
@@ -31,7 +56,8 @@
       "submittedDate": "2026-09-03",
       "institution": "Unassigned",
       "priority": "Medium",
-      "confidence": 88
+      "confidence": 88,
+      "submitter_id": "user-cit-1"
     },
     {
       "id": "SIP-0987",
@@ -42,7 +68,8 @@
       "submittedDate": "2026-09-02",
       "institution": "RIMS Ranchi",
       "priority": "High",
-      "confidence": 95
+      "confidence": 95,
+      "submitter_id": "user-gov-1"
     },
     {
       "id": "SIP-0980",
@@ -53,7 +80,8 @@
       "submittedDate": "2026-09-01",
       "institution": "Unassigned",
       "priority": "Medium",
-      "confidence": 84
+      "confidence": 84,
+      "submitter_id": "user-cit-1"
     },
     {
       "id": "SIP-0975",
@@ -64,7 +92,8 @@
       "submittedDate": "2026-09-06",
       "institution": "Unassigned",
       "priority": "High",
-      "confidence": 92
+      "confidence": 92,
+      "submitter_id": "user-cit-1"
     }
   ],
   "stats": {
