@@ -1,0 +1,171 @@
+{
+  "problems": [
+    {
+      "id": "SIP-1024",
+      "title": "Groundwater Arsenic & Fluoride Contamination",
+      "category": "Water Resources",
+      "location": "Simdega",
+      "status": "Assigned",
+      "submittedDate": "2026-09-04",
+      "institution": "BIT Mesra",
+      "priority": "High",
+      "confidence": 97
+    },
+    {
+      "id": "SIP-1019",
+      "title": "Unseasonal crop blight destroying paddy yields",
+      "category": "Agriculture",
+      "location": "Bokaro",
+      "status": "In Progress",
+      "submittedDate": "2026-09-04",
+      "institution": "Birsa Agricultural University",
+      "priority": "High",
+      "confidence": 92
+    },
+    {
+      "id": "SIP-1008",
+      "title": "Off-Grid Solar Micro-distribution Failures",
+      "category": "Energy",
+      "location": "Gumla",
+      "status": "AI Triaged",
+      "submittedDate": "2026-09-03",
+      "institution": "Unassigned",
+      "priority": "Medium",
+      "confidence": 88
+    },
+    {
+      "id": "SIP-0987",
+      "title": "Lack of maternal tele-diagnostic tools in tribal belts",
+      "category": "Healthcare",
+      "location": "Palamu",
+      "status": "Under Review",
+      "submittedDate": "2026-09-02",
+      "institution": "RIMS Ranchi",
+      "priority": "High",
+      "confidence": 95
+    },
+    {
+      "id": "SIP-0980",
+      "title": "Illegal sand mining causing riverbank erosion",
+      "category": "Environment",
+      "location": "Sahibganj",
+      "status": "New",
+      "submittedDate": "2026-09-01",
+      "institution": "Unassigned",
+      "priority": "Medium",
+      "confidence": 84
+    },
+    {
+      "id": "SIP-0975",
+      "title": "Broken water pump at primary school",
+      "category": "Water Resources",
+      "location": "Ranchi",
+      "status": "New",
+      "submittedDate": "2026-09-06",
+      "institution": "Unassigned",
+      "priority": "High",
+      "confidence": 92
+    }
+  ],
+  "stats": {
+    "totalChallenges": 1284,
+    "resolved": 742,
+    "universitiesInvolved": 14
+  },
+  "categories": [
+    {
+      "category": "Agriculture",
+      "count": 312,
+      "id": "Tb8atYQT58A"
+    },
+    {
+      "category": "Water Resources",
+      "count": 284,
+      "id": "wUXtirQIxSM"
+    },
+    {
+      "category": "Healthcare",
+      "count": 215,
+      "id": "mJuNJqe_htQ"
+    },
+    {
+      "category": "Environment",
+      "count": 186,
+      "id": "LR17929Zp-M"
+    },
+    {
+      "category": "Education",
+      "count": 142,
+      "id": "5CbMnUl9P90"
+    },
+    {
+      "category": "Energy",
+      "count": 98,
+      "id": "WQkQIGhkoA0"
+    },
+    {
+      "category": "Urban Development",
+      "count": 47,
+      "id": "Zd67I_ostEw"
+    }
+  ],
+  "universities": [
+    {
+      "id": "UNI-01",
+      "name": "BIT Mesra",
+      "location": "Ranchi",
+      "focus": "IoT, Sensor Networks, Engineering"
+    },
+    {
+      "id": "UNI-02",
+      "name": "IIT (ISM) Dhanbad",
+      "location": "Dhanbad",
+      "focus": "Renewable Grids, Mining, Earth Sciences"
+    },
+    {
+      "id": "UNI-03",
+      "name": "NIT Jamshedpur",
+      "location": "East Singhbhum",
+      "focus": "Metallurgy, Manufacturing, Tech"
+    },
+    {
+      "id": "UNI-04",
+      "name": "Birsa Agricultural University",
+      "location": "Ranchi",
+      "focus": "Crop Science, Rural Livelihoods"
+    },
+    {
+      "id": "UNI-05",
+      "name": "RIMS Ranchi",
+      "location": "Ranchi",
+      "focus": "Healthcare, Telemedicine"
+    }
+  ],
+  "industry": [
+    {
+      "id": "IND-01",
+      "name": "Tata Steel Tech Ventures",
+      "sector": "Materials & Infrastructure",
+      "location": "Jamshedpur"
+    },
+    {
+      "id": "IND-02",
+      "name": "SAIL Bokaro Steel Plant",
+      "sector": "Manufacturing",
+      "location": "Bokaro"
+    },
+    {
+      "id": "IND-03",
+      "name": "Central Coalfields Ltd",
+      "sector": "Energy & Environment",
+      "location": "Ranchi"
+    },
+    {
+      "id": "IND-004",
+      "name": "Aarav Unmanned Systems (AUS)",
+      "sector": "Technology",
+      "location": "Ranchi / Field Ops"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}
