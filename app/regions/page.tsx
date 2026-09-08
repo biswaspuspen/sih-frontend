@@ -94,7 +94,7 @@ export default function RegionsPage() {
                 </div>
                 <div className="rounded border border-border/60 bg-background/50 p-2.5">
                   <span className="text-muted-foreground block mb-1">Resolution Rate</span>
-                  <span className="font-mono text-emerald-400 font-medium text-sm">{Math.floor(Math.random() * 20 + 50)}%</span>
+                  <span suppressHydrationWarning className="font-mono text-emerald-400 font-medium text-sm">{Math.floor(Math.random() * 20 + 50)}%</span>
                 </div>
               </div>
               
