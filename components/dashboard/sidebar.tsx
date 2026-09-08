@@ -1,5 +1,6 @@
 "use client"
 
+import { useEffect, useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import {
@@ -13,7 +14,7 @@ import {
   Settings,
   LifeBuoy,
   Landmark,
-  FileText, // Added icon for My Submissions
+  FileText,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -37,13 +38,25 @@ const secondary = [
 export function Sidebar() {
   const pathname = usePathname()
   
-  // 2. TEMP: Hardcoded role for UI testing. 
-  // Change this to "citizen" or "university" and save the file to see the sidebar change!
-  const currentRole = "government" 
+  // 2. State to hold the current role, defaulting to government
+  const [currentRole, setCurrentRole] = useState("government")
+  const [mounted, setMounted] = useState(false)
 
-  // 3. Filter the links based on the current role
+  // 3. Read the role from localStorage when the sidebar loads
+  useEffect(() => {
+    setMounted(true)
+    const savedRole = localStorage.getItem("userRole")
+    if (savedRole) {
+      setCurrentRole(savedRole)
+    }
+  }, [])
+
+  // 4. Filter the links based on the current role
   const allowedNav = nav.filter(item => item.roles.includes(currentRole))
   const allowedSecondary = secondary.filter(item => item.roles.includes(currentRole))
+
+  // Prevent UI flickering during load
+  if (!mounted) return null
 
   return (
     <aside className="hidden w-64 shrink-0 flex-col bg-sidebar text-sidebar-foreground lg:flex">
