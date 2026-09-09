@@ -12,6 +12,12 @@
       "institution": "BIT Mesra",
       "status": "In Progress",
       "createdAt": "2026-08-02T09:12:00Z",
+      "assignedAt": "2026-08-05T09:00:00Z",
+      "team": [
+        { "id": "tm1", "name": "Dr. A. Sharma", "role": "Professor" },
+        { "id": "tm2", "name": "Priya Kumari", "role": "Student" },
+        { "id": "tm3", "name": "Rahul Mahato", "role": "Student" }
+      ],
       "solutionFileName": "BIT_IoT_Filtration_Spec_v2.pdf",
       "solutionNotes": "Low-cost filtration cartridge prototype with LoRa telemetry; field trial plan for 3 villages.",
       "solutionSubmittedAt": "2026-08-28T13:20:00Z"
@@ -41,6 +47,11 @@
       "institution": "BIT Mesra",
       "status": "Resolved",
       "createdAt": "2026-07-18T11:05:00Z",
+      "assignedAt": "2026-07-22T10:00:00Z",
+      "team": [
+        { "id": "tm1", "name": "Dr. A. Sharma", "role": "Professor" },
+        { "id": "tm3", "name": "Rahul Mahato", "role": "Student" }
+      ],
       "solutionFileName": "SolidState_Regulator_Pilot.pdf",
       "solutionNotes": "Deployed thermal cutoff pilot across 40 units; zero outages in August heat cycle.",
       "solutionSubmittedAt": "2026-08-10T16:45:00Z"
@@ -102,84 +113,50 @@
     }
   ],
   "universities": [
-    {
-      "id": "1",
-      "name": "BIT Mesra",
-      "location": "Ranchi",
-      "focus": "IoT Systems, Water Resources, AI Diagnostics"
-    },
-    {
-      "id": "2",
-      "name": "IIT (ISM) Dhanbad",
-      "location": "Dhanbad",
-      "focus": "Mining Engineering, Energy Systems, Geotechnical Safety"
-    },
-    {
-      "id": "3",
-      "name": "Birsa Agricultural University",
-      "location": "Ranchi",
-      "focus": "Agronomy, Soil Science, Post-Harvest Tech"
-    },
-    {
-      "id": "4",
-      "name": "NIT Jamshedpur",
-      "location": "Jamshedpur",
-      "focus": "Materials Science, Robotics, Smart Manufacturing"
-    },
-    {
-      "id": "5",
-      "name": "RIMS Ranchi",
-      "location": "Ranchi",
-      "focus": "Biomedical Instrumentation, Rural Health, Epidemiology"
-    },
-    {
-      "id": "6",
-      "name": "Central University of Jharkhand",
-      "location": "Ranchi",
-      "focus": "Remote Sensing, Environmental Science, Tribal Studies"
-    }
+    { "id": "1", "name": "BIT Mesra", "location": "Ranchi", "focus": "IoT Systems, Water Resources, AI Diagnostics" },
+    { "id": "2", "name": "IIT (ISM) Dhanbad", "location": "Dhanbad", "focus": "Mining Engineering, Energy Systems, Geotechnical Safety" },
+    { "id": "3", "name": "Birsa Agricultural University", "location": "Ranchi", "focus": "Agronomy, Soil Science, Post-Harvest Tech" },
+    { "id": "4", "name": "NIT Jamshedpur", "location": "Jamshedpur", "focus": "Materials Science, Robotics, Smart Manufacturing" },
+    { "id": "5", "name": "RIMS Ranchi", "location": "Ranchi", "focus": "Biomedical Instrumentation, Rural Health, Epidemiology" },
+    { "id": "6", "name": "Central University of Jharkhand", "location": "Ranchi", "focus": "Remote Sensing, Environmental Science, Tribal Studies" }
   ],
   "industry": [
-    {
-      "id": "1",
-      "name": "Tata Steel Ltd.",
-      "sector": "Materials & Infrastructure",
-      "location": "Jamshedpur"
-    },
-    {
-      "id": "2",
-      "name": "Central Coalfields Ltd.",
-      "sector": "Energy & Environment",
-      "location": "Ranchi"
-    },
-    {
-      "id": "3",
-      "name": "Heavy Engineering Corp.",
-      "sector": "Manufacturing",
-      "location": "Ranchi"
-    },
-    {
-      "id": "4",
-      "name": "MECON Limited",
-      "sector": "Materials & Infrastructure",
-      "location": "Ranchi"
-    },
-    {
-      "id": "5",
-      "name": "BCCL (Bharat Coking Coal)",
-      "sector": "Energy & Environment",
-      "location": "Dhanbad"
-    },
-    {
-      "id": "6",
-      "name": "AgriGrid Analytics",
-      "sector": "Technology",
-      "location": "Ranchi"
-    }
+    { "id": "1", "name": "Tata Steel Ltd.", "sector": "Materials & Infrastructure", "location": "Jamshedpur" },
+    { "id": "2", "name": "Central Coalfields Ltd.", "sector": "Energy & Environment", "location": "Ranchi" },
+    { "id": "3", "name": "Heavy Engineering Corp.", "sector": "Manufacturing", "location": "Ranchi" },
+    { "id": "4", "name": "MECON Limited", "sector": "Materials & Infrastructure", "location": "Ranchi" },
+    { "id": "5", "name": "BCCL (Bharat Coking Coal)", "sector": "Energy & Environment", "location": "Dhanbad" },
+    { "id": "6", "name": "AgriGrid Analytics", "sector": "Technology", "location": "Ranchi" }
+  ],
+  "teamMembers": [
+    { "id": "tm1",  "name": "Dr. A. Sharma",     "role": "Professor", "institution": "BIT Mesra",                      "department": "Civil Engineering" },
+    { "id": "tm2",  "name": "Priya Kumari",      "role": "Student",   "institution": "BIT Mesra",                      "department": "Computer Science",                "year": "3rd Year" },
+    { "id": "tm3",  "name": "Rahul Mahato",      "role": "Student",   "institution": "BIT Mesra",                      "department": "Electronics & Communication",     "year": "2nd Year" },
+    { "id": "tm13", "name": "Dr. S. K. Singh",   "role": "Professor", "institution": "BIT Mesra",                      "department": "Environmental Science" },
+    { "id": "tm14", "name": "Anjali Verma",      "role": "Student",   "institution": "BIT Mesra",                      "department": "Computer Science",                "year": "4th Year" },
+    { "id": "tm15", "name": "Vikram Raj",        "role": "Student",   "institution": "BIT Mesra",                      "department": "Mechanical Engineering",          "year": "3rd Year" },
+    { "id": "tm4",  "name": "Dr. V. K. Tiwari",  "role": "Professor", "institution": "IIT (ISM) Dhanbad",              "department": "Mining Engineering" },
+    { "id": "tm5",  "name": "Ankit Raj",         "role": "Student",   "institution": "IIT (ISM) Dhanbad",              "department": "Mining Engineering",              "year": "3rd Year" },
+    { "id": "tm6",  "name": "Saurabh Kumar",     "role": "Student",   "institution": "IIT (ISM) Dhanbad",              "department": "Civil Engineering",               "year": "2nd Year" },
+    { "id": "tm16", "name": "Dr. M. P. Roy",     "role": "Professor", "institution": "IIT (ISM) Dhanbad",              "department": "Applied Geophysics" },
+    { "id": "tm17", "name": "Deepak Singh",      "role": "Student",   "institution": "IIT (ISM) Dhanbad",              "department": "Computer Science",                "year": "4th Year" },
+    { "id": "tm7",  "name": "Dr. S. Banerjee",   "role": "Professor", "institution": "NIT Jamshedpur",                 "department": "Metallurgical & Materials Engg" },
+    { "id": "tm8",  "name": "Sneha Sinha",       "role": "Student",   "institution": "NIT Jamshedpur",                 "department": "Electronics & Communication",     "year": "3rd Year" },
+    { "id": "tm18", "name": "Dr. P. Chatterjee", "role": "Professor", "institution": "NIT Jamshedpur",                 "department": "Mechanical Engineering" },
+    { "id": "tm19", "name": "Rohit Das",         "role": "Student",   "institution": "NIT Jamshedpur",                 "department": "Computer Science",                "year": "2nd Year" },
+    { "id": "tm9",  "name": "Dr. R. P. Mahto",   "role": "Professor", "institution": "Birsa Agricultural University",  "department": "Agronomy" },
+    { "id": "tm10", "name": "Kunal Soren",       "role": "Student",   "institution": "Birsa Agricultural University",  "department": "Agriculture (B.Sc.)",             "year": "3rd Year" },
+    { "id": "tm20", "name": "Dr. Urmila Ekka",   "role": "Professor", "institution": "Birsa Agricultural University",  "department": "Soil Science" },
+    { "id": "tm21", "name": "Sunny Beck",        "role": "Student",   "institution": "Birsa Agricultural University",  "department": "Horticulture",                    "year": "2nd Year" },
+    { "id": "tm11", "name": "Dr. N. Jha",        "role": "Professor", "institution": "RIMS Ranchi",                    "department": "Community Medicine" },
+    { "id": "tm12", "name": "Ayesha Khan",       "role": "Student",   "institution": "RIMS Ranchi",                    "department": "MBBS",                            "year": "3rd Year" },
+    { "id": "tm22", "name": "Dr. S. K. Pandey",  "role": "Professor", "institution": "RIMS Ranchi",                    "department": "Public Health" },
+    { "id": "tm23", "name": "Manish Toppo",      "role": "Student",   "institution": "RIMS Ranchi",                    "department": "B.Sc. Nursing",                   "year": "4th Year" }
   ],
   "stats": {
     "totalChallenges": 7,
     "resolved": 1,
     "universitiesInvolved": 4
-  }
+  },
+  "$schema": "./node_modules/json-server/schema.json"
 }

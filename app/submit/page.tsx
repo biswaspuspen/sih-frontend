@@ -9,6 +9,9 @@ export default function SubmitChallengePage() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [success, setSuccess] = useState(false)
   
+  // File upload state
+  const [evidenceFile, setEvidenceFile] = useState<File | null>(null)
+
   // Store form data between steps
   const [formData, setFormData] = useState({
     title: "",
@@ -84,30 +87,31 @@ export default function SubmitChallengePage() {
       const existingProblems = await dbRes.json()
 
       const maxId = existingProblems.reduce((max: number, p: any) => {
-        // Check either the new sipId or the old id format
         const idToCheck = p.sipId || p.id
         if (idToCheck?.startsWith("SIP-")) {
           const num = parseInt(idToCheck.replace("SIP-", ""), 10)
           return num > max ? num : max
         }
         return max
-      }, 1000) // Defaults to 1000 if the database is empty
+      }, 1000)
 
       const newSipId = `SIP-${maxId + 1}`
 
-      // 2. Build the problem object with the new ID and submittedBy field
+      // 2. Build the problem object with the new ID and evidence filename
       const newProblem = {
-        id: newSipId, // json-server might overwrite this
-        sipId: newSipId, // This is our bulletproof ID
+        id: newSipId,
+        sipId: newSipId,
         title: formData.title,
+        description: formData.description,
         category: aiAnalysis.category,
-        location: formData.district, 
+        district: formData.district,
         status: "New",
-        submittedDate: new Date().toISOString().split("T")[0],
+        createdAt: new Date().toISOString(),
         institution: "Unassigned", 
         priority: aiAnalysis.priority,
         confidence: aiAnalysis.confidence,
-        submittedBy: "Demo Citizen" // Added for My Submissions filtering
+        submittedBy: "Demo Citizen",
+        evidenceFileName: evidenceFile ? evidenceFile.name : null
       }
 
       // 3. Post to JSON Server
@@ -122,6 +126,7 @@ export default function SubmitChallengePage() {
         setTimeout(() => {
           setSuccess(false)
           setStep(1)
+          setEvidenceFile(null)
           setFormData({ title: "", submitterType: "", district: "", description: "" })
         }, 3000)
       }
@@ -154,6 +159,7 @@ export default function SubmitChallengePage() {
               <label htmlFor="title" className="text-sm font-medium text-foreground">Problem Title</label>
               <input 
                 required id="title" name="title" type="text" 
+                defaultValue={formData.title}
                 placeholder="e.g., Unseasonal crop blight destroying paddy yields"
                 className="w-full rounded-md border border-input bg-background/50 px-4 py-2.5 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
               />
@@ -166,6 +172,7 @@ export default function SubmitChallengePage() {
                   <User className="absolute left-3 top-2.5 size-4 text-muted-foreground" />
                   <select 
                     required id="submitterType" name="submitterType"
+                    defaultValue={formData.submitterType}
                     className="w-full rounded-md border border-input bg-background/50 pl-10 pr-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 appearance-none"
                   >
                     <option value="">Select origin...</option>
@@ -184,6 +191,7 @@ export default function SubmitChallengePage() {
                   <MapPin className="absolute left-3 top-2.5 size-4 text-muted-foreground" />
                   <select 
                     required id="district" name="district"
+                    defaultValue={formData.district}
                     className="w-full rounded-md border border-input bg-background/50 pl-10 pr-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 appearance-none"
                   >
                     <option value="">Select district...</option>
@@ -205,25 +213,38 @@ export default function SubmitChallengePage() {
               <label htmlFor="description" className="text-sm font-medium text-foreground">Detailed Telemetry / Impact</label>
               <textarea 
                 required id="description" name="description" rows={3}
+                defaultValue={formData.description}
                 placeholder="Describe the societal impact, population affected, and duration of the problem..."
                 className="w-full rounded-md border border-input bg-background/50 px-4 py-2.5 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
               />
             </div>
 
-            {/* Stub for File Uploads */}
+            {/* Interactive File Upload Area */}
             <div className="space-y-2">
               <label className="text-sm font-medium text-foreground">Evidence & Documentation</label>
-              <div className="rounded-lg border-2 border-dashed border-border/80 bg-background/30 p-8 flex flex-col items-center justify-center text-center hover:bg-background/50 transition-colors cursor-pointer">
+              <label className="flex cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-border/80 bg-background/30 p-8 text-center transition-colors hover:bg-background/50">
                 <div className="flex gap-4 mb-3 text-muted-foreground">
                   <Camera className="size-6" />
                   <FileText className="size-6" />
                 </div>
-                <p className="text-sm font-medium text-foreground">Drag and drop field evidence here</p>
-                <p className="text-xs text-muted-foreground mt-1">Supports Geotagged Photos, MP4, and PDF reports up to 50MB</p>
-                <button type="button" className="mt-4 rounded bg-muted px-3 py-1.5 text-xs font-medium text-foreground hover:bg-muted/80">
-                  Browse Files
-                </button>
-              </div>
+                <p className="text-sm font-medium text-foreground">
+                  {evidenceFile ? evidenceFile.name : "Click or drag and drop field evidence here"}
+                </p>
+                <p className="text-xs text-muted-foreground mt-1">
+                  {evidenceFile 
+                    ? `${(evidenceFile.size / 1024 / 1024).toFixed(2)} MB • File attached`
+                    : "Supports Geotagged Photos, MP4, and PDF reports up to 50MB"}
+                </p>
+                <span className="mt-4 rounded bg-muted px-3 py-1.5 text-xs font-medium text-foreground hover:bg-muted/80">
+                  {evidenceFile ? "Change File" : "Browse Files"}
+                </span>
+                <input 
+                  type="file" 
+                  accept="image/*,video/mp4,.pdf,.doc,.docx" 
+                  className="hidden" 
+                  onChange={(e) => setEvidenceFile(e.target.files?.[0] || null)} 
+                />
+              </label>
             </div>
 
             <div className="pt-4 flex justify-end">
@@ -279,6 +300,14 @@ export default function SubmitChallengePage() {
                   </span>
                 </div>
               </div>
+
+              {/* Show attached file confirmation in Step 2 */}
+              {evidenceFile && (
+                <div className="mt-4 flex items-center gap-2 rounded border border-border/60 bg-background/50 p-3 text-xs text-muted-foreground">
+                  <FileText className="size-4 text-primary" />
+                  <span>Attached Evidence: <strong className="text-foreground">{evidenceFile.name}</strong></span>
+                </div>
+              )}
             </div>
 
             <div className="flex items-center gap-4 justify-end pt-4">

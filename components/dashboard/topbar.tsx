@@ -17,7 +17,7 @@ export function Topbar() {
           <div className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
             <Landmark className="size-4" aria-hidden="true" />
           </div>
-          <span className="text-sm font-semibold">Jharkhand Grid</span>
+          <span className="text-sm font-semibold">Sahyug</span>
         </div>
       </div>
 

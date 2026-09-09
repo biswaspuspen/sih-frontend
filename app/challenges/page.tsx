@@ -1,7 +1,16 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { Search, Filter, AlertCircle, ArrowUpDown, ChevronLeft, ChevronRight, UploadCloud, X, FileText, CheckCircle2 } from "lucide-react"
+import { Search, Filter, AlertCircle, ArrowUpDown, ChevronLeft, ChevronRight, UploadCloud, X, FileText, CheckCircle2, Users } from "lucide-react"
+
+interface TeamMember {
+  id: string
+  name: string
+  role: string
+  institution?: string
+  department?: string
+  year?: string
+}
 
 interface Problem {
   id: string
@@ -9,8 +18,10 @@ interface Problem {
   title: string
   category: string
   location: string
+  district?: string
   status: string
   submittedDate: string
+  createdAt?: string
   institution: string
   priority?: string
   confidence?: number
@@ -18,6 +29,21 @@ interface Problem {
   solutionNotes?: string
   solutionSubmittedAt?: string
   submittedBy?: string
+  team?: TeamMember[]
+  assignedAt?: string
+}
+
+// NEW: normalizer — ledger compares institutions case/space-insensitively
+const norm = (v?: string) => (v || "").trim().toLowerCase()
+const UNASSIGNED = "unassigned"
+
+// NEW: tolerant date renderer — ledger rows use createdAt; older mock rows used submittedDate
+function formatLoggedDate(p: Problem) {
+  const raw = p.createdAt || p.submittedDate
+  if (!raw) return "—"
+  const d = new Date(raw)
+  if (isNaN(d.getTime())) return raw
+  return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })
 }
 
 export default function ChallengesPage() {
@@ -30,12 +56,20 @@ export default function ChallengesPage() {
   const [statusFilter, setStatusFilter] = useState("All")
   const [categoryFilter, setCategoryFilter] = useState("All")
 
-  // Modal state
+  // Upload modal state (unchanged)
   const [modalOpen, setModalOpen] = useState(false)
   const [selectedProblem, setSelectedProblem] = useState<Problem | null>(null)
   const [solutionFile, setSolutionFile] = useState<File | null>(null)
   const [solutionNotes, setSolutionNotes] = useState("")
   const [submitting, setSubmitting] = useState(false)
+
+  // NEW: team-formation (claim) modal state
+  const [claimTarget, setClaimTarget] = useState<Problem | null>(null)
+  const [teamOptions, setTeamOptions] = useState<TeamMember[]>([])
+  const [teamLoading, setTeamLoading] = useState(false)
+  const [selectedTeamIds, setSelectedTeamIds] = useState<string[]>([])
+  const [claiming, setClaiming] = useState(false)
+  const [claimError, setClaimError] = useState("")
 
   // 1. Get User Role + Institution
   useEffect(() => {
@@ -72,18 +106,21 @@ export default function ChallengesPage() {
     const matchesStatus = statusFilter === "All" || p.status === statusFilter
     const matchesCategory = categoryFilter === "All" || p.category === categoryFilter
 
+    // MODIFIED: universities see the open claim pool + their own claims
     const matchesRole =
       role === "university"
-        ? p.institution?.trim().toLowerCase() === userInstitution.trim().toLowerCase()
+        ? norm(p.institution) === UNASSIGNED || norm(p.institution) === norm(userInstitution)
         : true
 
     return matchesSearch && matchesStatus && matchesCategory && matchesRole
   })
 
-  // MODIFIED: both roles now have an Action column
+  // NEW: metrics are measured on the university's own claims only — the open pool mustn't inflate them
+  const ownClaims = problems.filter((p) => norm(p.institution) === norm(userInstitution))
+
   const columnCount = 7
 
-  // 4. Modal handlers
+  // 4. Upload modal handlers (unchanged)
   function handleOpenModal(id: string) {
     const problem = problems.find((p) => p.id === id || p.sipId === id) || null
     setSelectedProblem(problem)
@@ -128,13 +165,14 @@ export default function ChallengesPage() {
     }
   }
 
-  // NEW: Government assigns an unassigned challenge to a university R&D node
+  // Government force-assigns an unclaimed challenge to a university R&D node (manual override)
   async function handleAssign(id: string, institutionName: string) {
     try {
       const res = await fetch(`http://localhost:5000/problems/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ institution: institutionName, status: "Assigned" }),
+        // MODIFIED: also stamps assignedAt so the claim timeline stays consistent
+        body: JSON.stringify({ institution: institutionName, status: "Assigned", assignedAt: new Date().toISOString() }),
       })
       if (!res.ok) throw new Error(`Request failed: ${res.status}`)
       const updated = await res.json()
@@ -145,7 +183,7 @@ export default function ChallengesPage() {
     }
   }
 
-  // NEW: Government marks a challenge resolved after the university uploads a solution
+  // Government marks a challenge resolved after the university uploads a solution
   async function handleResolve(id: string) {
     try {
       const res = await fetch(`http://localhost:5000/problems/${id}`, {
@@ -162,38 +200,116 @@ export default function ChallengesPage() {
     }
   }
 
+  // NEW: open the team-formation modal and load this institution's roster
+  function handleOpenClaim(problem: Problem) {
+    setClaimTarget(problem)
+    setSelectedTeamIds([])
+    setClaimError("")
+    setTeamOptions([])
+    setTeamLoading(true)
+    fetch(`http://localhost:5000/teamMembers?institution=${encodeURIComponent(userInstitution)}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data)) setTeamOptions(data)
+        setTeamLoading(false)
+      })
+      .catch((err) => {
+        console.error("Failed to fetch team roster", err)
+        setTeamLoading(false)
+      })
+  }
+
+  function toggleTeamMember(id: string) {
+    setSelectedTeamIds((prev) =>
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
+    )
+  }
+
+  function handleCloseClaim() {
+    if (claiming) return
+    setClaimTarget(null)
+  }
+
+  // NEW: confirm claim — re-check the row is still unclaimed before writing,
+  // so a second university can never silently overwrite someone's claim
+  async function handleConfirmClaim() {
+    if (!claimTarget || selectedTeamIds.length === 0) return
+    setClaiming(true)
+    setClaimError("")
+
+    try {
+      const check = await fetch(`http://localhost:5000/problems/${claimTarget.id}`)
+      if (!check.ok) throw new Error(`Request failed: ${check.status}`)
+      const latest: Problem = await check.json()
+
+      if (norm(latest.institution) !== UNASSIGNED) {
+        setClaimError(`Just claimed by ${latest.institution} — pool refreshed. Pick another challenge.`)
+        const refresh = await fetch("http://localhost:5000/problems")
+        const data = await refresh.json()
+        if (Array.isArray(data)) setProblems(data)
+        return
+      }
+
+      const selectedMembers = teamOptions
+        .filter((m) => selectedTeamIds.includes(m.id))
+        .map(({ id, name, role }) => ({ id, name, role }))
+
+      const res = await fetch(`http://localhost:5000/problems/${claimTarget.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          institution: userInstitution,
+          status: "Assigned",
+          team: selectedMembers,
+          assignedAt: new Date().toISOString(),
+        }),
+      })
+      if (!res.ok) throw new Error(`Request failed: ${res.status}`)
+
+      const updated = await res.json()
+      setProblems((prev) => prev.map((p) => (p.id === updated.id ? { ...p, ...updated } : p)))
+      setClaimTarget(null)
+    } catch (err) {
+      console.error("Claim failed", err)
+      setClaimError("Couldn't claim — check that json-server is running on :5000.")
+    } finally {
+      setClaiming(false)
+    }
+  }
+
   return (
     <div className="flex-1 px-6 py-8 lg:px-10 max-w-[1600px] mx-auto">
       <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-foreground">
-            {role === "university" ? "University Node Assignments" : "Grievance Master Ledger"}
+            {/* MODIFIED: name no longer implies admin does the assigning */}
+            {role === "university" ? "Open Challenge Pool" : "Grievance Master Ledger"}
           </h1>
           <p className="mt-1 text-sm text-muted-foreground">
             {role === "university"
-              ? `Review societal grievances assigned to ${userInstitution} and upload research solutions.`
+              ? `Claim unclaimed challenges for ${userInstitution}, form your R&D team, and upload research solutions.`
               : "View, filter, and track all societal challenges moving through the state pipeline."}
           </p>
         </div>
       </div>
 
-      {/* University Metrics Strip */}
+      {/* University Metrics Strip — counts own claims only */}
       {role === "university" && (
         <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
           <div className="rounded-xl border border-border/80 bg-card/60 p-5 shadow-sm">
-            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Total Assigned</p>
-            <p className="mt-2 text-3xl font-bold text-foreground">{filteredProblems.length}</p>
+            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Total Claimed</p>
+            <p className="mt-2 text-3xl font-bold text-foreground">{ownClaims.length}</p>
           </div>
           <div className="rounded-xl border border-border/80 bg-card/60 p-5 shadow-sm">
             <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Active R&D</p>
             <p className="mt-2 text-3xl font-bold text-blue-500">
-              {filteredProblems.filter((p) => p.status === "In Progress" || p.status === "Assigned").length}
+              {ownClaims.filter((p) => p.status === "In Progress" || p.status === "Assigned").length}
             </p>
           </div>
           <div className="rounded-xl border border-border/80 bg-card/60 p-5 shadow-sm">
             <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Resolved</p>
             <p className="mt-2 text-3xl font-bold text-emerald-500">
-              {filteredProblems.filter((p) => p.status === "Resolved").length}
+              {ownClaims.filter((p) => p.status === "Resolved").length}
             </p>
           </div>
         </div>
@@ -241,7 +357,6 @@ export default function ChallengesPage() {
               <option value="AI Triaged">AI Triaged</option>
               <option value="Assigned">Assigned</option>
               <option value="In Progress">In Progress</option>
-              {/* NEW: Resolved was missing from the filter */}
               <option value="Resolved">Resolved</option>
             </select>
           </div>
@@ -260,7 +375,6 @@ export default function ChallengesPage() {
                 <th className="px-5 py-3">Assigned Academic Node</th>
                 <th className="px-5 py-3">Stage</th>
                 <th className="px-5 py-3 text-right">Date Logged</th>
-                {/* MODIFIED: Action column for both roles now */}
                 <th className="px-5 py-3 text-right">Action</th>
               </tr>
             </thead>
@@ -291,85 +405,112 @@ export default function ChallengesPage() {
                   </td>
                 </tr>
               ) : (
-                filteredProblems.map((item) => (
-                  <tr key={item.id} className="hover:bg-muted/30 transition-colors group">
-                    <td className="px-5 py-4 font-mono font-medium text-primary">{item.sipId || item.id}</td>
-                    <td className="px-5 py-4">
-                      <div className="font-medium text-foreground max-w-sm truncate">{item.title}</div>
-                      <div className="flex items-center gap-2 mt-1">
-                        <span className="bg-muted px-2 py-0.5 rounded text-[10px] font-medium text-muted-foreground">
-                          {item.category}
-                        </span>
-                        {item.priority === "High" && (
-                          <span className="text-[10px] font-semibold text-rose-400">High Priority</span>
-                        )}
-                        {/* NEW: shows the uploaded proposal filename as proof of persistence */}
-                        {item.solutionFileName && (
-                          <span className="text-[10px] font-medium text-emerald-400/90">
-                            📎 {item.solutionFileName}
+                filteredProblems.map((item) => {
+                  // NEW: per-row claim state for the university action split
+                  const inst = norm(item.institution)
+                  const unclaimed = inst === UNASSIGNED
+                  const mine = inst === norm(userInstitution)
+                  return (
+                    <tr key={item.id} className="hover:bg-muted/30 transition-colors group">
+                      <td className="px-5 py-4 font-mono font-medium text-primary">{item.sipId || item.id}</td>
+                      <td className="px-5 py-4">
+                        <div className="font-medium text-foreground max-w-sm truncate">{item.title}</div>
+                        <div className="flex items-center gap-2 mt-1">
+                          <span className="bg-muted px-2 py-0.5 rounded text-[10px] font-medium text-muted-foreground">
+                            {item.category}
                           </span>
+                          {item.priority === "High" && (
+                            <span className="text-[10px] font-semibold text-rose-400">High Priority</span>
+                          )}
+                          {item.solutionFileName && (
+                            <span className="text-[10px] font-medium text-emerald-400/90">
+                              📎 {item.solutionFileName}
+                            </span>
+                          )}
+                        </div>
+                      </td>
+                      {/* MODIFIED: district fallback — db.json uses district, older rows used location */}
+                      <td className="px-5 py-4 text-muted-foreground text-xs">{item.district || item.location || "—"}</td>
+                      <td className="px-5 py-4 text-xs font-medium text-foreground/90">
+                        {item.institution}
+                        {/* NEW: team badge on claimed rows */}
+                        {item.team && item.team.length > 0 && (
+                          <div className="mt-0.5 flex items-center gap-1 text-[10px] text-muted-foreground">
+                            <Users className="size-3" /> {item.team.length}-member team
+                          </div>
                         )}
-                      </div>
-                    </td>
-                    <td className="px-5 py-4 text-muted-foreground text-xs">{item.location}</td>
-                    <td className="px-5 py-4 text-xs font-medium text-foreground/90">{item.institution}</td>
-                    <td className="px-5 py-4">
-                      <span
-                        className={`inline-flex items-center px-2 py-1 rounded text-[10px] font-semibold uppercase tracking-wider ${
-                          item.status === "In Progress"
-                            ? "bg-blue-500/10 text-blue-400 border border-blue-500/20"
-                            : item.status === "Assigned"
-                            ? "bg-purple-500/10 text-purple-400 border border-purple-500/20"
-                            : item.status === "Resolved"
-                            ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
-                            : "bg-amber-500/10 text-amber-400 border border-amber-500/20"
-                        }`}
-                      >
-                        {item.status}
-                      </span>
-                    </td>
-                    <td className="px-5 py-4 text-right font-mono text-muted-foreground text-xs">
-                      {item.submittedDate}
-                    </td>
-                    {/* MODIFIED: role-aware actions for both roles */}
-                    <td className="px-5 py-4 text-right">
-                      {role === "university" ? (
-                        <button
-                          onClick={() => handleOpenModal(item.id)}
-                          className="inline-flex items-center gap-1.5 rounded-md bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary hover:bg-primary/20 transition-colors"
+                      </td>
+                      <td className="px-5 py-4">
+                        <span
+                          className={`inline-flex items-center px-2 py-1 rounded text-[10px] font-semibold uppercase tracking-wider ${
+                            item.status === "In Progress"
+                              ? "bg-blue-500/10 text-blue-400 border border-blue-500/20"
+                              : item.status === "Assigned"
+                              ? "bg-purple-500/10 text-purple-400 border border-purple-500/20"
+                              : item.status === "Resolved"
+                              ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
+                              : "bg-amber-500/10 text-amber-400 border border-amber-500/20"
+                          }`}
                         >
-                          <UploadCloud className="size-3.5" />
-                          {item.solutionFileName ? "Update" : "Upload"}
-                        </button>
-                      ) : item.institution === "Unassigned" ? (
-                        <select
-                          defaultValue=""
-                          onChange={(e) => {
-                            if (e.target.value) handleAssign(item.id, e.target.value)
-                          }}
-                          className="rounded-md border border-input bg-background/50 px-2 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-primary/50"
-                        >
-                          <option value="">Assign node…</option>
-                          <option value="BIT Mesra">BIT Mesra</option>
-                          <option value="IIT (ISM) Dhanbad">IIT (ISM) Dhanbad</option>
-                          <option value="NIT Jamshedpur">NIT Jamshedpur</option>
-                          <option value="Birsa Agricultural University">Birsa Agricultural University</option>
-                          <option value="RIMS Ranchi">RIMS Ranchi</option>
-                        </select>
-                      ) : item.status === "In Progress" && item.solutionFileName ? (
-                        <button
-                          onClick={() => handleResolve(item.id)}
-                          className="inline-flex items-center gap-1.5 rounded-md bg-emerald-500/10 px-3 py-1.5 text-xs font-semibold text-emerald-400 hover:bg-emerald-500/20 transition-colors"
-                        >
-                          <CheckCircle2 className="size-3.5" />
-                          Mark Resolved
-                        </button>
-                      ) : (
-                        <span className="text-xs text-muted-foreground/50">—</span>
-                      )}
-                    </td>
-                  </tr>
-                ))
+                          {item.status}
+                        </span>
+                      </td>
+                      <td className="px-5 py-4 text-right font-mono text-muted-foreground text-xs">
+                        {formatLoggedDate(item)}
+                      </td>
+                      {/* MODIFIED: university actions split by claim state; gov keeps Force Assign override */}
+                      <td className="px-5 py-4 text-right">
+                        {role === "university" ? (
+                          unclaimed ? (
+                            <button
+                              onClick={() => handleOpenClaim(item)}
+                              className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground hover:bg-primary/90 transition-colors"
+                            >
+                              <Users className="size-3.5" />
+                              Take This Challenge
+                            </button>
+                          ) : mine ? (
+                            <button
+                              onClick={() => handleOpenModal(item.id)}
+                              className="inline-flex items-center gap-1.5 rounded-md bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary hover:bg-primary/20 transition-colors"
+                            >
+                              <UploadCloud className="size-3.5" />
+                              {item.solutionFileName ? "Update" : "Upload"}
+                            </button>
+                          ) : (
+                            <span className="text-xs text-muted-foreground/50">—</span>
+                          )
+                        ) : unclaimed ? (
+                          <select
+                            defaultValue=""
+                            onChange={(e) => {
+                              if (e.target.value) handleAssign(item.id, e.target.value)
+                            }}
+                            className="rounded-md border border-input bg-background/50 px-2 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-primary/50"
+                          >
+                            {/* MODIFIED: relabeled — self-claim is the primary path, this is the manual override */}
+                            <option value="">Force Assign…</option>
+                            <option value="BIT Mesra">BIT Mesra</option>
+                            <option value="IIT (ISM) Dhanbad">IIT (ISM) Dhanbad</option>
+                            <option value="NIT Jamshedpur">NIT Jamshedpur</option>
+                            <option value="Birsa Agricultural University">Birsa Agricultural University</option>
+                            <option value="RIMS Ranchi">RIMS Ranchi</option>
+                          </select>
+                        ) : item.status === "In Progress" && item.solutionFileName ? (
+                          <button
+                            onClick={() => handleResolve(item.id)}
+                            className="inline-flex items-center gap-1.5 rounded-md bg-emerald-500/10 px-3 py-1.5 text-xs font-semibold text-emerald-400 hover:bg-emerald-500/20 transition-colors"
+                          >
+                            <CheckCircle2 className="size-3.5" />
+                            Mark Resolved
+                          </button>
+                        ) : (
+                          <span className="text-xs text-muted-foreground/50">—</span>
+                        )}
+                      </td>
+                    </tr>
+                  )
+                })
               )}
             </tbody>
           </table>
@@ -389,7 +530,7 @@ export default function ChallengesPage() {
         </div>
       </div>
 
-      {/* Upload Solution Modal */}
+      {/* Upload Solution Modal (unchanged) */}
       {modalOpen && selectedProblem && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4"
@@ -404,7 +545,7 @@ export default function ChallengesPage() {
                 <p className="font-mono text-xs text-primary">{selectedProblem.sipId || selectedProblem.id}</p>
                 <h2 className="mt-1 text-lg font-semibold text-foreground">{selectedProblem.title}</h2>
                 <p className="mt-1 text-xs text-muted-foreground">
-                  {selectedProblem.location} · {selectedProblem.category}
+                  {selectedProblem.district || selectedProblem.location} · {selectedProblem.category}
                 </p>
               </div>
               <button
@@ -464,6 +605,112 @@ export default function ChallengesPage() {
               >
                 <UploadCloud className="size-3.5" />
                 {submitting ? "Submitting..." : "Submit Solution"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* NEW: Team-Formation Modal — shown when a university claims a challenge */}
+      {claimTarget && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4"
+          onClick={handleCloseClaim}
+        >
+          <div
+            className="w-full max-w-lg rounded-xl border border-border/80 bg-card p-6 shadow-lg"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <p className="font-mono text-xs text-primary">{claimTarget.sipId || claimTarget.id}</p>
+                <h2 className="mt-1 text-lg font-semibold text-foreground">{claimTarget.title}</h2>
+                <p className="mt-1 text-xs text-muted-foreground">
+                  {claimTarget.district || claimTarget.location} · {claimTarget.category}
+                </p>
+              </div>
+              <button
+                onClick={handleCloseClaim}
+                className="rounded-md p-1 text-muted-foreground hover:bg-muted hover:text-foreground"
+                aria-label="Close"
+              >
+                <X className="size-4" />
+              </button>
+            </div>
+
+            <div className="mt-5">
+              <label className="mb-2 block text-xs font-medium text-muted-foreground">
+                Form your project team — at least one member required
+              </label>
+
+              {teamLoading ? (
+                <p className="rounded-md border border-dashed border-border/60 px-4 py-6 text-center text-xs text-muted-foreground">
+                  Loading {userInstitution} roster...
+                </p>
+              ) : teamOptions.length === 0 ? (
+                <p className="rounded-md border border-dashed border-border/60 px-4 py-6 text-center text-xs text-muted-foreground">
+                  No registered members found for {userInstitution}.
+                </p>
+              ) : (
+                <div className="space-y-2">
+                  {teamOptions.map((m) => {
+                    const checked = selectedTeamIds.includes(m.id)
+                    return (
+                      <label
+                        key={m.id}
+                        className={`flex cursor-pointer items-center gap-3 rounded-md border px-3 py-2.5 transition-colors ${
+                          checked
+                            ? "border-primary/50 bg-primary/10"
+                            : "border-border/60 bg-background/50 hover:bg-muted/30"
+                        }`}
+                      >
+                        <input
+                          type="checkbox"
+                          checked={checked}
+                          onChange={() => toggleTeamMember(m.id)}
+                          className="size-4 accent-primary"
+                        />
+                        <span className="flex-1 min-w-0">
+                          <span className="block text-sm font-medium text-foreground">{m.name}</span>
+                          <span className="block text-[10px] text-muted-foreground">
+                            {m.department}{m.year ? ` · ${m.year}` : ""}
+                          </span>
+                        </span>
+                        <span
+                          className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold border ${
+                            m.role === "Professor"
+                              ? "bg-purple-500/10 text-purple-400 border-purple-500/20"
+                              : "bg-blue-500/10 text-blue-400 border-blue-500/20"
+                          }`}
+                        >
+                          {m.role}
+                        </span>
+                      </label>
+                    )
+                  })}
+                </div>
+              )}
+
+              {claimError && (
+                <p className="mt-3 text-xs text-rose-400">{claimError}</p>
+              )}
+            </div>
+
+            <div className="mt-6 flex justify-end gap-2">
+              <button
+                onClick={handleCloseClaim}
+                disabled={claiming}
+                className="rounded-md px-3 py-2 text-xs font-semibold text-muted-foreground hover:bg-muted"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleConfirmClaim}
+                disabled={claiming || selectedTeamIds.length === 0}
+                className="inline-flex items-center gap-1.5 rounded-md bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
+              >
+                <Users className="size-3.5" />
+                {claiming ? "Claiming..." : "Claim & Form Team"}
               </button>
             </div>
           </div>

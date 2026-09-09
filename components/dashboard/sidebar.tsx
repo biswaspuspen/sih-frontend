@@ -15,6 +15,7 @@ import {
   LifeBuoy,
   Landmark,
   FileText,
+  FolderKanban,
   LogOut,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -23,6 +24,8 @@ import { cn } from "@/lib/utils"
 const nav = [
   { label: "Overview", icon: LayoutDashboard, href: "/", roles: ["government"] },
   { label: "Challenges", icon: ListChecks, href: "/challenges", roles: ["government", "university"] },
+  // NEW: universities get their claim-history page as a second top-level item
+  { label: "My Projects", icon: FolderKanban, href: "/projects", roles: ["university"] },
   { label: "Submit Challenge", icon: PlusCircle, href: "/submit", roles: ["citizen"] },
   { label: "My Submissions", icon: FileText, href: "/my-submissions", roles: ["citizen"] },
   { label: "Universities", icon: GraduationCap, href: "/universities", roles: ["government"] },
@@ -57,6 +60,14 @@ export function Sidebar() {
   const allowedNav = nav.filter(item => item.roles.includes(currentRole))
   const allowedSecondary = secondary.filter(item => item.roles.includes(currentRole))
 
+  // NEW: same role keeps gov's "Challenges" label, but for universities
+  // rename it to reflect the self-claim model (one item, one label — shown per role)
+  const displayNav = allowedNav.map((item) =>
+    item.href === "/challenges" && currentRole === "university"
+      ? { ...item, label: "Open Challenges" }
+      : item
+  )
+
   // 5. Logout — clears both localStorage AND the cookies middleware reads,
   //    then sends the user back to /login so they can pick a new role.
   const handleLogout = () => {
@@ -79,7 +90,7 @@ export function Sidebar() {
           <Landmark className="size-5" aria-hidden="true" />
         </div>
         <div className="leading-tight">
-          <p className="text-sm font-semibold">Jharkhand Grid</p>
+          <p className="text-sm font-semibold">Sahyug</p>
           <p className="text-xs text-sidebar-foreground/60">State Command</p>
         </div>
       </div>
@@ -88,7 +99,7 @@ export function Sidebar() {
         <p className="px-3 pb-1 pt-3 text-xs font-medium uppercase tracking-wider text-sidebar-foreground/50">
           Menu
         </p>
-        {allowedNav.map((item) => {
+        {displayNav.map((item) => {
           const Icon = item.icon
           const isActive = pathname === item.href
           return (

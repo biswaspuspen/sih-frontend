@@ -20,9 +20,12 @@ const ROLE_HOME: Record<Role, string> = {
 // path prefix -> allowed roles
 const ROUTE_RULES: [string, Role[]][] = [
   ["/challenges", ["government", "university"]],
+  ["/projects", ["university"]],        // My Projects = university claim history
   ["/regions", ["government"]],
   ["/reports", ["government"]],
-  ["/industry", ["government", "university"]],
+  ["/industry", ["government"]],
+  ["/universities", ["government"]],
+  ["/settings", ["government"]],
   ["/my-submissions", ["citizen"]],
   ["/submit", ["government", "university", "citizen"]],
   ["/support", ["government", "university", "citizen"]],
