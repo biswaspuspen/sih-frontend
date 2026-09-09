@@ -78,19 +78,39 @@ export default function SubmitChallengePage() {
   const handleFinalSubmit = async () => {
     setIsSubmitting(true)
     
-    const newProblem = {
-      id: `SIP-${Math.floor(1000 + Math.random() * 9000)}`,
-      title: formData.title,
-      category: aiAnalysis.category,
-      location: formData.district, // Now strictly a Jharkhand district
-      status: "New",
-      submittedDate: new Date().toISOString().split("T")[0],
-      institution: "Unassigned", // Will be assigned later in pipeline
-      priority: aiAnalysis.priority,
-      confidence: aiAnalysis.confidence
-    }
-
     try {
+      // 1. Fetch existing problems to calculate the next sequential SIP-XXXX ID
+      const dbRes = await fetch("http://localhost:5000/problems")
+      const existingProblems = await dbRes.json()
+
+      const maxId = existingProblems.reduce((max: number, p: any) => {
+        // Check either the new sipId or the old id format
+        const idToCheck = p.sipId || p.id
+        if (idToCheck?.startsWith("SIP-")) {
+          const num = parseInt(idToCheck.replace("SIP-", ""), 10)
+          return num > max ? num : max
+        }
+        return max
+      }, 1000) // Defaults to 1000 if the database is empty
+
+      const newSipId = `SIP-${maxId + 1}`
+
+      // 2. Build the problem object with the new ID and submittedBy field
+      const newProblem = {
+        id: newSipId, // json-server might overwrite this
+        sipId: newSipId, // This is our bulletproof ID
+        title: formData.title,
+        category: aiAnalysis.category,
+        location: formData.district, 
+        status: "New",
+        submittedDate: new Date().toISOString().split("T")[0],
+        institution: "Unassigned", 
+        priority: aiAnalysis.priority,
+        confidence: aiAnalysis.confidence,
+        submittedBy: "Demo Citizen" // Added for My Submissions filtering
+      }
+
+      // 3. Post to JSON Server
       const response = await fetch("http://localhost:5000/problems", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

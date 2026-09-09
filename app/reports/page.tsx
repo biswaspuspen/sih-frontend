@@ -1,6 +1,7 @@
 "use client"
 
-import { FileText, Download, BarChart3, Calendar, ShieldCheck, FileSpreadsheet } from "lucide-react"
+import { useEffect, useState } from "react"
+import { FileText, Download, BarChart3, Calendar, ShieldCheck, FileSpreadsheet, FileCheck2 } from "lucide-react"
 
 const REPORTS = [
   {
@@ -33,7 +34,40 @@ const REPORTS = [
   }
 ]
 
+// NEW: shape of a ledger record that carries a university-uploaded solution
+interface SolvedProblem {
+  id: string
+  sipId?: string
+  title: string
+  institution: string
+  status: string
+  solutionFileName?: string
+  solutionNotes?: string
+  solutionSubmittedAt?: string
+}
+
 export default function ReportsPage() {
+  // NEW: live solutions pulled from the state ledger
+  const [solutions, setSolutions] = useState<SolvedProblem[]>([])
+  const [solutionsLoading, setSolutionsLoading] = useState(true)
+
+  useEffect(() => {
+    fetch("http://localhost:5000/problems")
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data)) {
+          const published = data
+            .filter((p: SolvedProblem) => p.solutionSubmittedAt)
+            .sort((a: SolvedProblem, b: SolvedProblem) =>
+              (b.solutionSubmittedAt || "").localeCompare(a.solutionSubmittedAt || "")
+            )
+          setSolutions(published)
+        }
+        setSolutionsLoading(false)
+      })
+      .catch(() => setSolutionsLoading(false))
+  }, [])
+
   return (
     <div className="flex-1 px-6 py-8 lg:px-10 max-w-5xl mx-auto">
       <div className="mb-8">
@@ -77,6 +111,70 @@ export default function ReportsPage() {
             Configure
           </button>
         </div>
+      </div>
+
+      {/* NEW: live solutions feed — every university upload lands here automatically */}
+      <div className="rounded-xl border border-border/80 bg-card/60 shadow-sm overflow-hidden mb-8">
+        <div className="p-5 border-b border-border/50 bg-muted/10 flex items-center justify-between">
+          <h2 className="text-sm font-semibold text-foreground">Published Research Solutions</h2>
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 text-[11px] font-semibold text-emerald-400">
+            <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            Live from State Ledger
+          </span>
+        </div>
+
+        {solutionsLoading ? (
+          <p className="p-5 text-sm text-muted-foreground">Syncing with state database...</p>
+        ) : solutions.length === 0 ? (
+          <p className="p-5 text-sm text-muted-foreground">
+            No research solutions published yet — university uploads will appear here automatically.
+          </p>
+        ) : (
+          <div className="divide-y divide-border/40">
+            {solutions.map((item) => (
+              <div key={item.id} className="p-4 flex items-center justify-between hover:bg-muted/30 transition-colors group">
+                <div className="flex items-center gap-4 min-w-0">
+                  <div className={`p-2 rounded-lg shrink-0 ${
+                    item.status === "Resolved"
+                      ? "bg-emerald-500/10 text-emerald-400"
+                      : "bg-blue-500/10 text-blue-400"
+                  }`}>
+                    <FileCheck2 className="size-5" />
+                  </div>
+                  <div className="min-w-0">
+                    <h3 className="text-sm font-medium text-foreground truncate">{item.title}</h3>
+                    <div className="flex items-center gap-3 mt-1 text-[11px] text-muted-foreground">
+                      <span className="font-mono text-primary">{item.sipId || item.id}</span>
+                      <span>•</span>
+                      <span className="font-mono">
+                        {new Date(item.solutionSubmittedAt || "").toLocaleDateString("en-US", {
+                          month: "short",
+                          day: "numeric",
+                          year: "numeric",
+                        })}
+                      </span>
+                      <span>•</span>
+                      <span className="bg-muted px-1.5 py-0.5 rounded truncate">{item.institution}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3 shrink-0">
+                  <span className="text-[11px] font-mono text-emerald-400/90 hidden sm:block truncate max-w-[200px]">
+                    📎 {item.solutionFileName || "proposal document"}
+                  </span>
+                  <span className={`inline-flex items-center px-2 py-1 rounded text-[10px] font-semibold uppercase tracking-wider ${
+                    item.status === "Resolved"
+                      ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
+                      : "bg-blue-500/10 text-blue-400 border border-blue-500/20"
+                  }`}>
+                    {item.status}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       <div className="rounded-xl border border-border/80 bg-card/60 shadow-sm overflow-hidden">

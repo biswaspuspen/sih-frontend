@@ -21,16 +21,17 @@ export function Topbar() {
         </div>
       </div>
 
-      <div className="relative hidden max-w-md flex-1 md:block">
+      {/* SEARCH BAR SECTION - INCREASED SIZE */}
+      <div className="relative hidden max-w-2xl flex-1 md:block">
         <Search
-          className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
+          className="pointer-events-none absolute left-4 top-1/2 size-5 -translate-y-1/2 text-muted-foreground"
           aria-hidden="true"
         />
         <input
           type="search"
           placeholder="Search challenges, regions, universities..."
           aria-label="Search"
-          className="w-full rounded-lg border border-border bg-card py-2 pl-9 pr-3 text-sm text-foreground outline-none placeholder:text-muted-foreground focus:ring-2 focus:ring-ring/40"
+          className="w-full rounded-lg border border-border bg-card py-3 pl-12 pr-4 text-base text-foreground outline-none placeholder:text-muted-foreground focus:ring-2 focus:ring-ring/40"
         />
       </div>
 

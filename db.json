@@ -1,200 +1,185 @@
 {
-  "users": [
-    {
-      "id": "user-gov-1",
-      "name": "R. Mehta",
-      "email": "admin@jharkhand.gov.in",
-      "role": "government",
-      "institution": null
-    },
-    {
-      "id": "user-uni-1",
-      "name": "Dr. Sharma",
-      "email": "sharma@bitmesra.ac.in",
-      "role": "university",
-      "institution": "BIT Mesra"
-    },
-    {
-      "id": "user-cit-1",
-      "name": "Demo Citizen",
-      "email": "citizen@example.com",
-      "role": "citizen",
-      "institution": null
-    }
-  ],
   "problems": [
     {
-      "id": "SIP-1024",
-      "title": "Groundwater Arsenic & Fluoride Contamination",
+      "id": "1",
+      "sipId": "SIP-1001",
+      "title": "Subsurface Heavy Metal Leaching into Rural Borewells",
+      "description": "Arsenic and manganese leaching into borewells across East Singhbhum villages. Need low-cost IoT filtration pilots aligned with Jal Jeevan Mission.",
       "category": "Water Resources",
-      "location": "Simdega",
-      "status": "Assigned",
-      "submittedDate": "2026-09-04",
+      "district": "East Singhbhum",
+      "priority": "High",
+      "submittedBy": "Gram Panchayat - Simdega",
       "institution": "BIT Mesra",
-      "priority": "High",
-      "confidence": 97,
-      "submitter_id": "user-cit-1"
-    },
-    {
-      "id": "SIP-1019",
-      "title": "Unseasonal crop blight destroying paddy yields",
-      "category": "Agriculture",
-      "location": "Bokaro",
       "status": "In Progress",
-      "submittedDate": "2026-09-04",
-      "institution": "Birsa Agricultural University",
-      "priority": "High",
-      "confidence": 92,
-      "submitter_id": "user-cit-1"
+      "createdAt": "2026-08-02T09:12:00Z",
+      "solutionFileName": "BIT_IoT_Filtration_Spec_v2.pdf",
+      "solutionNotes": "Low-cost filtration cartridge prototype with LoRa telemetry; field trial plan for 3 villages.",
+      "solutionSubmittedAt": "2026-08-28T13:20:00Z"
     },
     {
-      "id": "SIP-1008",
-      "title": "Off-Grid Solar Micro-distribution Failures",
-      "category": "Energy",
-      "location": "Gumla",
-      "status": "AI Triaged",
-      "submittedDate": "2026-09-03",
-      "institution": "Unassigned",
-      "priority": "Medium",
-      "confidence": 88,
-      "submitter_id": "user-cit-1"
-    },
-    {
-      "id": "SIP-0987",
-      "title": "Lack of maternal tele-diagnostic tools in tribal belts",
-      "category": "Healthcare",
-      "location": "Palamu",
-      "status": "Under Review",
-      "submittedDate": "2026-09-02",
-      "institution": "RIMS Ranchi",
-      "priority": "High",
-      "confidence": 95,
-      "submitter_id": "user-gov-1"
-    },
-    {
-      "id": "SIP-0980",
-      "title": "Illegal sand mining causing riverbank erosion",
-      "category": "Environment",
-      "location": "Sahibganj",
-      "status": "New",
-      "submittedDate": "2026-09-01",
-      "institution": "Unassigned",
-      "priority": "Medium",
-      "confidence": 84,
-      "submitter_id": "user-cit-1"
-    },
-    {
-      "id": "SIP-0975",
-      "title": "Broken water pump at primary school",
-      "category": "Water Resources",
-      "location": "Ranchi",
-      "status": "New",
-      "submittedDate": "2026-09-06",
-      "institution": "Unassigned",
-      "priority": "High",
-      "confidence": 92,
-      "submitter_id": "user-cit-1"
-    }
-  ],
-  "stats": {
-    "totalChallenges": 1284,
-    "resolved": 742,
-    "universitiesInvolved": 14
-  },
-  "categories": [
-    {
+      "id": "2",
+      "sipId": "SIP-1002",
+      "title": "Unpredictable Post-Harvest Tomato Glut Causing Distress Sales",
+      "description": "Farmers around Ranchi lose 30-40% of tomato produce every season due to price crashes. Need solar micro cold-storage network and price-alert app.",
       "category": "Agriculture",
-      "count": 312,
-      "id": "Tb8atYQT58A"
+      "district": "Ranchi",
+      "priority": "Medium",
+      "submittedBy": "FPO Tamar Block",
+      "institution": "Birsa Agricultural University",
+      "status": "Assigned",
+      "createdAt": "2026-08-05T06:40:00Z"
     },
     {
-      "category": "Water Resources",
-      "count": 284,
-      "id": "wUXtirQIxSM"
-    },
-    {
-      "category": "Healthcare",
-      "count": 215,
-      "id": "mJuNJqe_htQ"
-    },
-    {
-      "category": "Environment",
-      "count": 186,
-      "id": "LR17929Zp-M"
-    },
-    {
-      "category": "Education",
-      "count": 142,
-      "id": "5CbMnUl9P90"
-    },
-    {
+      "id": "3",
+      "sipId": "SIP-1003",
+      "title": "Overheated Sub-Station Transformers During Summer Load",
+      "description": "Distribution transformers in Bokaro industrial belt overheat during peak summer causing blackouts. Need predictive thermal monitoring retrofit.",
       "category": "Energy",
-      "count": 98,
-      "id": "WQkQIGhkoA0"
+      "district": "Bokaro",
+      "priority": "High",
+      "submittedBy": "Cold Storage Operators Union",
+      "institution": "BIT Mesra",
+      "status": "Resolved",
+      "createdAt": "2026-07-18T11:05:00Z",
+      "solutionFileName": "SolidState_Regulator_Pilot.pdf",
+      "solutionNotes": "Deployed thermal cutoff pilot across 40 units; zero outages in August heat cycle.",
+      "solutionSubmittedAt": "2026-08-10T16:45:00Z"
     },
     {
-      "category": "Urban Development",
-      "count": 47,
-      "id": "Zd67I_ostEw"
+      "id": "4",
+      "sipId": "SIP-1004",
+      "title": "Coal Mine Slope Instability Threatening Worker Safety",
+      "description": "Open-cast mines near Dhanbad show micro-displacements before collapse. Need early-warning sensor mesh and evacuation protocol automation.",
+      "category": "Mining",
+      "district": "Dhanbad",
+      "priority": "High",
+      "submittedBy": "BCCL Safety Cell",
+      "institution": "IIT (ISM) Dhanbad",
+      "status": "In Progress",
+      "createdAt": "2026-07-25T08:30:00Z",
+      "solutionFileName": "Slope_SensorMesh_Design.pdf",
+      "solutionNotes": "Tiltmeter + piezometer mesh spec, 90-day geotech validation underway.",
+      "solutionSubmittedAt": "2026-09-01T10:00:00Z"
+    },
+    {
+      "id": "5",
+      "sipId": "SIP-1005",
+      "title": "Ambulance Response Delays in Forested Districts",
+      "description": "Emergency response times exceed 90 minutes in Palamu and Latehar forest zones. Need hub-and-spoke tele-triage with two-wheeler first responders.",
+      "category": "Healthcare",
+      "district": "Palamu",
+      "priority": "High",
+      "submittedBy": "District Health Office - Palamu",
+      "institution": "BIT Mesra",
+      "status": "Assigned",
+      "createdAt": "2026-08-08T14:20:00Z"
+    },
+    {
+      "id": "6",
+      "sipId": "SIP-1006",
+      "title": "Tribal Students Dropping Out After Class 8 in Remote Blocks",
+      "description": "Transition rates from middle to secondary school fall sharply in Khunti and Gumla due to distance and lack of hostels. Need mobile learning + community hostel pilot.",
+      "category": "Education",
+      "district": "Khunti",
+      "priority": "Medium",
+      "submittedBy": "Zila Parishad - Khunti",
+      "institution": "RIMS Ranchi",
+      "status": "Under Review",
+      "createdAt": "2026-08-12T09:00:00Z"
+    },
+    {
+      "id": "7",
+      "sipId": "SIP-1007",
+      "title": "Arsenic Test Kits Unavailable at Village Level",
+      "description": "Field health workers lack rapid arsenic test kits in Simdega. Need low-cost colorimetric kit distribution and reporting workflow.",
+      "category": "Water Resources",
+      "district": "Simdega",
+      "priority": "Medium",
+      "submittedBy": "Demo Citizen",
+      "institution": "Unassigned",
+      "status": "New",
+      "createdAt": "2026-09-06T12:00:00Z"
     }
   ],
   "universities": [
     {
-      "id": "UNI-01",
+      "id": "1",
       "name": "BIT Mesra",
       "location": "Ranchi",
-      "focus": "IoT, Sensor Networks, Engineering"
+      "focus": "IoT Systems, Water Resources, AI Diagnostics"
     },
     {
-      "id": "UNI-02",
+      "id": "2",
       "name": "IIT (ISM) Dhanbad",
       "location": "Dhanbad",
-      "focus": "Renewable Grids, Mining, Earth Sciences"
+      "focus": "Mining Engineering, Energy Systems, Geotechnical Safety"
     },
     {
-      "id": "UNI-03",
-      "name": "NIT Jamshedpur",
-      "location": "East Singhbhum",
-      "focus": "Metallurgy, Manufacturing, Tech"
-    },
-    {
-      "id": "UNI-04",
+      "id": "3",
       "name": "Birsa Agricultural University",
       "location": "Ranchi",
-      "focus": "Crop Science, Rural Livelihoods"
+      "focus": "Agronomy, Soil Science, Post-Harvest Tech"
     },
     {
-      "id": "UNI-05",
+      "id": "4",
+      "name": "NIT Jamshedpur",
+      "location": "Jamshedpur",
+      "focus": "Materials Science, Robotics, Smart Manufacturing"
+    },
+    {
+      "id": "5",
       "name": "RIMS Ranchi",
       "location": "Ranchi",
-      "focus": "Healthcare, Telemedicine"
+      "focus": "Biomedical Instrumentation, Rural Health, Epidemiology"
+    },
+    {
+      "id": "6",
+      "name": "Central University of Jharkhand",
+      "location": "Ranchi",
+      "focus": "Remote Sensing, Environmental Science, Tribal Studies"
     }
   ],
   "industry": [
     {
-      "id": "IND-01",
-      "name": "Tata Steel Tech Ventures",
+      "id": "1",
+      "name": "Tata Steel Ltd.",
       "sector": "Materials & Infrastructure",
       "location": "Jamshedpur"
     },
     {
-      "id": "IND-02",
-      "name": "SAIL Bokaro Steel Plant",
-      "sector": "Manufacturing",
-      "location": "Bokaro"
-    },
-    {
-      "id": "IND-03",
-      "name": "Central Coalfields Ltd",
+      "id": "2",
+      "name": "Central Coalfields Ltd.",
       "sector": "Energy & Environment",
       "location": "Ranchi"
     },
     {
-      "id": "IND-004",
-      "name": "Aarav Unmanned Systems (AUS)",
+      "id": "3",
+      "name": "Heavy Engineering Corp.",
+      "sector": "Manufacturing",
+      "location": "Ranchi"
+    },
+    {
+      "id": "4",
+      "name": "MECON Limited",
+      "sector": "Materials & Infrastructure",
+      "location": "Ranchi"
+    },
+    {
+      "id": "5",
+      "name": "BCCL (Bharat Coking Coal)",
+      "sector": "Energy & Environment",
+      "location": "Dhanbad"
+    },
+    {
+      "id": "6",
+      "name": "AgriGrid Analytics",
       "sector": "Technology",
-      "location": "Ranchi / Field Ops"
+      "location": "Ranchi"
     }
   ],
-  "$schema": "./node_modules/json-server/schema.json"
+  "stats": {
+    "totalChallenges": 7,
+    "resolved": 1,
+    "universitiesInvolved": 4
+  }
 }

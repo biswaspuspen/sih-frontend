@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import {
   LayoutDashboard,
   ListChecks,
@@ -15,6 +15,7 @@ import {
   LifeBuoy,
   Landmark,
   FileText,
+  LogOut,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -37,23 +38,36 @@ const secondary = [
 
 export function Sidebar() {
   const pathname = usePathname()
-  
+  const router = useRouter()
+
   // 2. State to hold the current role, defaulting to government
   const [currentRole, setCurrentRole] = useState("government")
   const [mounted, setMounted] = useState(false)
 
-  // 3. Read the role from localStorage when the sidebar loads
+  // 3. Read the role from localStorage when the sidebar loads or route changes
   useEffect(() => {
     setMounted(true)
     const savedRole = localStorage.getItem("userRole")
     if (savedRole) {
       setCurrentRole(savedRole)
     }
-  }, [])
+  }, [pathname]) // ADDED pathname HERE so it updates instantly on login
 
   // 4. Filter the links based on the current role
   const allowedNav = nav.filter(item => item.roles.includes(currentRole))
   const allowedSecondary = secondary.filter(item => item.roles.includes(currentRole))
+
+  // 5. Logout — clears both localStorage AND the cookies middleware reads,
+  //    then sends the user back to /login so they can pick a new role.
+  const handleLogout = () => {
+    localStorage.removeItem("userRole")
+    localStorage.removeItem("userInstitution")
+
+    document.cookie = "userRole=; path=/; max-age=0"
+    document.cookie = "userInstitution=; path=/; max-age=0"
+
+    router.push("/login")
+  }
 
   // Prevent UI flickering during load
   if (!mounted) return null
@@ -129,14 +143,23 @@ export function Sidebar() {
           <div className="flex size-9 items-center justify-center rounded-full bg-sidebar-accent text-sm font-semibold text-sidebar-accent-foreground">
             {currentRole === "government" ? "RM" : currentRole === "university" ? "DS" : "DC"}
           </div>
-          <div className="leading-tight">
-            <p className="text-sm font-medium capitalize">
+          <div className="min-w-0 flex-1 leading-tight">
+            <p className="truncate text-sm font-medium capitalize">
               {currentRole === "government" ? "R. Mehta" : currentRole === "university" ? "Dr. Sharma" : "Demo Citizen"}
             </p>
             <p className="text-xs text-sidebar-foreground/60 capitalize">
               {currentRole}
             </p>
           </div>
+          <button
+            type="button"
+            onClick={handleLogout}
+            aria-label="Log out"
+            title="Log out"
+            className="flex size-8 shrink-0 items-center justify-center rounded-md text-sidebar-foreground/60 transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+          >
+            <LogOut className="size-4" aria-hidden="true" />
+          </button>
         </div>
       </div>
     </aside>
