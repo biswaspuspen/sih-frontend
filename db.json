@@ -1,0 +1,542 @@
+{
+  "problems": [
+    {
+      "id": "1",
+      "sipId": "SIP-1001",
+      "title": "Subsurface Heavy Metal Leaching into Rural Borewells",
+      "description": "Arsenic and manganese leaching into borewells across East Singhbhum villages. Need low-cost IoT filtration pilots aligned with Jal Jeevan Mission.",
+      "category": "Water Resources",
+      "district": "East Singhbhum",
+      "priority": "High",
+      "submittedBy": "Gram Panchayat - Simdega",
+      "institution": "BIT Mesra",
+      "status": "In Progress",
+      "createdAt": "2026-08-02T09:12:00Z",
+      "assignedAt": "2026-08-05T09:00:00Z",
+      "team": [
+        {
+          "id": "tm1",
+          "name": "Dr. A. Sharma",
+          "role": "Professor"
+        },
+        {
+          "id": "tm2",
+          "name": "Priya Kumari",
+          "role": "Student"
+        },
+        {
+          "id": "tm3",
+          "name": "Rahul Mahato",
+          "role": "Student"
+        }
+      ],
+      "solutionFileName": "BIT_IoT_Filtration_Spec_v2.pdf",
+      "solutionNotes": "Low-cost filtration cartridge prototype with LoRa telemetry; field trial plan for 3 villages.",
+      "solutionSubmittedAt": "2026-08-28T13:20:00Z"
+    },
+    {
+      "id": "2",
+      "sipId": "SIP-1002",
+      "title": "Unpredictable Post-Harvest Tomato Glut Causing Distress Sales",
+      "description": "Farmers around Ranchi lose 30-40% of tomato produce every season due to price crashes. Need solar micro cold-storage network and price-alert app.",
+      "category": "Agriculture",
+      "district": "Ranchi",
+      "priority": "Medium",
+      "submittedBy": "FPO Tamar Block",
+      "institution": "Birsa Agricultural University",
+      "status": "Assigned",
+      "createdAt": "2026-08-05T06:40:00Z"
+    },
+    {
+      "id": "3",
+      "sipId": "SIP-1003",
+      "title": "Overheated Sub-Station Transformers During Summer Load",
+      "description": "Distribution transformers in Bokaro industrial belt overheat during peak summer causing blackouts. Need predictive thermal monitoring retrofit.",
+      "category": "Energy",
+      "district": "Bokaro",
+      "priority": "High",
+      "submittedBy": "Cold Storage Operators Union",
+      "institution": "BIT Mesra",
+      "status": "Resolved",
+      "createdAt": "2026-07-18T11:05:00Z",
+      "assignedAt": "2026-07-22T10:00:00Z",
+      "team": [
+        {
+          "id": "tm1",
+          "name": "Dr. A. Sharma",
+          "role": "Professor"
+        },
+        {
+          "id": "tm3",
+          "name": "Rahul Mahato",
+          "role": "Student"
+        }
+      ],
+      "solutionFileName": "SolidState_Regulator_Pilot.pdf",
+      "solutionNotes": "Deployed thermal cutoff pilot across 40 units; zero outages in August heat cycle.",
+      "solutionSubmittedAt": "2026-08-10T16:45:00Z"
+    },
+    {
+      "id": "4",
+      "sipId": "SIP-1004",
+      "title": "Coal Mine Slope Instability Threatening Worker Safety",
+      "description": "Open-cast mines near Dhanbad show micro-displacements before collapse. Need early-warning sensor mesh and evacuation protocol automation.",
+      "category": "Mining",
+      "district": "Dhanbad",
+      "priority": "High",
+      "submittedBy": "BCCL Safety Cell",
+      "institution": "IIT (ISM) Dhanbad",
+      "status": "In Progress",
+      "createdAt": "2026-07-25T08:30:00Z",
+      "solutionFileName": "Slope_SensorMesh_Design.pdf",
+      "solutionNotes": "Tiltmeter + piezometer mesh spec, 90-day geotech validation underway.",
+      "solutionSubmittedAt": "2026-09-01T10:00:00Z"
+    },
+    {
+      "id": "5",
+      "sipId": "SIP-1005",
+      "title": "Ambulance Response Delays in Forested Districts",
+      "description": "Emergency response times exceed 90 minutes in Palamu and Latehar forest zones. Need hub-and-spoke tele-triage with two-wheeler first responders.",
+      "category": "Healthcare",
+      "district": "Palamu",
+      "priority": "High",
+      "submittedBy": "District Health Office - Palamu",
+      "institution": "BIT Mesra",
+      "status": "Assigned",
+      "createdAt": "2026-08-08T14:20:00Z"
+    },
+    {
+      "id": "6",
+      "sipId": "SIP-1006",
+      "title": "Tribal Students Dropping Out After Class 8 in Remote Blocks",
+      "description": "Transition rates from middle to secondary school fall sharply in Khunti and Gumla due to distance and lack of hostels. Need mobile learning + community hostel pilot.",
+      "category": "Education",
+      "district": "Khunti",
+      "priority": "Medium",
+      "submittedBy": "Zila Parishad - Khunti",
+      "institution": "RIMS Ranchi",
+      "status": "Under Review",
+      "createdAt": "2026-08-12T09:00:00Z"
+    },
+    {
+      "id": "7",
+      "sipId": "SIP-1007",
+      "title": "Arsenic Test Kits Unavailable at Village Level",
+      "description": "Field health workers lack rapid arsenic test kits in Simdega. Need low-cost colorimetric kit distribution and reporting workflow.",
+      "category": "Water Resources",
+      "district": "Simdega",
+      "priority": "Medium",
+      "submittedBy": "Demo Citizen",
+      "institution": "Unassigned",
+      "status": "New",
+      "createdAt": "2026-09-06T12:00:00Z"
+    }
+  ],
+  "universities": [
+    {
+      "id": "1",
+      "name": "BIT Mesra",
+      "location": "Ranchi",
+      "focus": "IoT Systems, Water Resources, AI Diagnostics"
+    },
+    {
+      "id": "2",
+      "name": "IIT (ISM) Dhanbad",
+      "location": "Dhanbad",
+      "focus": "Mining Engineering, Energy Systems, Geotechnical Safety"
+    },
+    {
+      "id": "3",
+      "name": "Birsa Agricultural University",
+      "location": "Ranchi",
+      "focus": "Agronomy, Soil Science, Post-Harvest Tech"
+    },
+    {
+      "id": "4",
+      "name": "NIT Jamshedpur",
+      "location": "Jamshedpur",
+      "focus": "Materials Science, Robotics, Smart Manufacturing"
+    },
+    {
+      "id": "5",
+      "name": "RIMS Ranchi",
+      "location": "Ranchi",
+      "focus": "Biomedical Instrumentation, Rural Health, Epidemiology"
+    },
+    {
+      "id": "6",
+      "name": "Central University of Jharkhand",
+      "location": "Ranchi",
+      "focus": "Remote Sensing, Environmental Science, Tribal Studies"
+    }
+  ],
+  "industry": [
+    {
+      "id": "1",
+      "name": "Tata Steel Ltd.",
+      "sector": "Materials & Infrastructure",
+      "location": "Jamshedpur"
+    },
+    {
+      "id": "2",
+      "name": "Central Coalfields Ltd.",
+      "sector": "Energy & Environment",
+      "location": "Ranchi"
+    },
+    {
+      "id": "3",
+      "name": "Heavy Engineering Corp.",
+      "sector": "Manufacturing",
+      "location": "Ranchi"
+    },
+    {
+      "id": "4",
+      "name": "MECON Limited",
+      "sector": "Materials & Infrastructure",
+      "location": "Ranchi"
+    },
+    {
+      "id": "5",
+      "name": "BCCL (Bharat Coking Coal)",
+      "sector": "Energy & Environment",
+      "location": "Dhanbad"
+    },
+    {
+      "id": "6",
+      "name": "AgriGrid Analytics",
+      "sector": "Technology",
+      "location": "Ranchi"
+    }
+  ],
+  "interests": [],
+  "teamMembers": [
+    {
+      "id": "tm1",
+      "name": "Dr. A. Sharma",
+      "role": "Professor",
+      "institution": "BIT Mesra",
+      "department": "Civil Engineering",
+      "phone": "+91 98XXX XXXXX",
+      "email": "a.sharma@bitmesra.demo.in",
+      "experience": "14 years teaching, 9 years applied research in groundwater treatment",
+      "pastProjects": [
+        "SIP-0891 — Fluoride removal pilot, Gumla",
+        "SIP-0762 — Rural water testing kit design"
+      ],
+      "linkedin": "linkedin.com/in/a-sharma-demo"
+    },
+    {
+      "id": "tm2",
+      "name": "Priya Kumari",
+      "role": "Student",
+      "institution": "BIT Mesra",
+      "department": "Computer Science",
+      "year": "3rd Year",
+      "phone": "+91 94XXX XXXXX",
+      "email": "priya.kumari@bitmesra.demo.in",
+      "pastProjects": [
+        "SIP-0954 — Smart irrigation sensor prototype"
+      ],
+      "linkedin": "linkedin.com/in/priya-kumari-demo"
+    },
+    {
+      "id": "tm3",
+      "name": "Rahul Mahato",
+      "role": "Student",
+      "institution": "BIT Mesra",
+      "department": "Electronics & Communication",
+      "year": "2nd Year",
+      "phone": "+91 97XXX XXXXX",
+      "email": "rahul.mahato@bitmesra.demo.in",
+      "pastProjects": []
+    },
+    {
+      "id": "tm13",
+      "name": "Dr. S. K. Singh",
+      "role": "Professor",
+      "institution": "BIT Mesra",
+      "department": "Environmental Science",
+      "phone": "+91 96XXX XXXXX",
+      "email": "sk.singh@bitmesra.demo.in",
+      "experience": "11 years teaching, 7 years in industrial effluent monitoring",
+      "pastProjects": [
+        "SIP-0833 — Mine runoff contamination survey, Dhanbad",
+        "SIP-0710 — Community water audit framework"
+      ],
+      "linkedin": "linkedin.com/in/sk-singh-demo"
+    },
+    {
+      "id": "tm14",
+      "name": "Anjali Verma",
+      "role": "Student",
+      "institution": "BIT Mesra",
+      "department": "Computer Science",
+      "year": "4th Year",
+      "phone": "+91 91XXX XXXXX",
+      "email": "anjali.verma@bitmesra.demo.in",
+      "pastProjects": [
+        "SIP-0962 — Crop price alert app, Tamar Block"
+      ],
+      "linkedin": "linkedin.com/in/anjali-verma-demo"
+    },
+    {
+      "id": "tm15",
+      "name": "Vikram Raj",
+      "role": "Student",
+      "institution": "BIT Mesra",
+      "department": "Mechanical Engineering",
+      "year": "3rd Year",
+      "phone": "+91 90XXX XXXXX",
+      "email": "vikram.raj@bitmesra.demo.in",
+      "pastProjects": [
+        "SIP-0947 — Solar micro cold-storage retrofit"
+      ],
+      "linkedin": "linkedin.com/in/vikram-raj-demo"
+    },
+    {
+      "id": "tm4",
+      "name": "Dr. V. K. Tiwari",
+      "role": "Professor",
+      "institution": "IIT (ISM) Dhanbad",
+      "department": "Mining Engineering",
+      "phone": "+91 88XXX XXXXX",
+      "email": "vk.tiwari@iitism.demo.in",
+      "experience": "16 years in mine safety and rock mechanics research",
+      "pastProjects": [
+        "SIP-0805 — Slope stability sensor mesh trial, Dhanbad",
+        "SIP-0688 — Mine void detection survey"
+      ],
+      "linkedin": "linkedin.com/in/vk-tiwari-demo"
+    },
+    {
+      "id": "tm5",
+      "name": "Ankit Raj",
+      "role": "Student",
+      "institution": "IIT (ISM) Dhanbad",
+      "department": "Mining Engineering",
+      "year": "3rd Year",
+      "phone": "+91 87XXX XXXXX",
+      "email": "ankit.raj@iitism.demo.in",
+      "pastProjects": [
+        "SIP-0944 — Haul-road dust suppression study"
+      ],
+      "linkedin": "linkedin.com/in/ankit-raj-demo"
+    },
+    {
+      "id": "tm6",
+      "name": "Saurabh Kumar",
+      "role": "Student",
+      "institution": "IIT (ISM) Dhanbad",
+      "department": "Civil Engineering",
+      "year": "2nd Year",
+      "phone": "+91 95XXX XXXXX",
+      "email": "saurabh.kumar@iitism.demo.in",
+      "pastProjects": [],
+      "linkedin": "linkedin.com/in/saurabh-kumar-demo"
+    },
+    {
+      "id": "tm16",
+      "name": "Dr. M. P. Roy",
+      "role": "Professor",
+      "institution": "IIT (ISM) Dhanbad",
+      "department": "Applied Geophysics",
+      "phone": "+91 93XXX XXXXX",
+      "email": "mp.roy@iitism.demo.in",
+      "experience": "12 years teaching, 8 years in geophysical instrumentation",
+      "pastProjects": [
+        "SIP-0856 — Piezometer telemetry grid, Jharia",
+        "SIP-0741 — Seismic micro-zonation report"
+      ],
+      "linkedin": "linkedin.com/in/mp-roy-demo"
+    },
+    {
+      "id": "tm17",
+      "name": "Deepak Singh",
+      "role": "Student",
+      "institution": "IIT (ISM) Dhanbad",
+      "department": "Computer Science",
+      "year": "4th Year",
+      "phone": "+91 89XXX XXXXX",
+      "email": "deepak.singh@iitism.demo.in",
+      "pastProjects": [
+        "SIP-0967 — Early-warning dashboard prototype"
+      ],
+      "linkedin": "linkedin.com/in/deepak-singh-demo"
+    },
+    {
+      "id": "tm7",
+      "name": "Dr. S. Banerjee",
+      "role": "Professor",
+      "institution": "NIT Jamshedpur",
+      "department": "Metallurgical & Materials Engg",
+      "phone": "+91 86XXX XXXXX",
+      "email": "s.banerjee@nitjsr.demo.in",
+      "experience": "15 years teaching, 10 years in corrosion and materials testing",
+      "pastProjects": [
+        "SIP-0812 — Rail track corrosion audit, Tatanagar",
+        "SIP-0705 — Low-cost alloy testing rig"
+      ],
+      "linkedin": "linkedin.com/in/s-banerjee-demo"
+    },
+    {
+      "id": "tm8",
+      "name": "Sneha Sinha",
+      "role": "Student",
+      "institution": "NIT Jamshedpur",
+      "department": "Electronics & Communication",
+      "year": "3rd Year",
+      "phone": "+91 85XXX XXXXX",
+      "email": "sneha.sinha@nitjsr.demo.in",
+      "pastProjects": [
+        "SIP-0959 — Transformer thermal sensor node"
+      ],
+      "linkedin": "linkedin.com/in/sneha-sinha-demo"
+    },
+    {
+      "id": "tm18",
+      "name": "Dr. P. Chatterjee",
+      "role": "Professor",
+      "institution": "NIT Jamshedpur",
+      "department": "Mechanical Engineering",
+      "phone": "+91 84XXX XXXXX",
+      "email": "p.chatterjee@nitjsr.demo.in",
+      "experience": "13 years teaching, 8 years in industrial automation",
+      "pastProjects": [
+        "SIP-0827 — Predictive maintenance pilot, HEC",
+        "SIP-0698 — CNC retrofit study"
+      ],
+      "linkedin": "linkedin.com/in/p-chatterjee-demo"
+    },
+    {
+      "id": "tm19",
+      "name": "Rohit Das",
+      "role": "Student",
+      "institution": "NIT Jamshedpur",
+      "department": "Computer Science",
+      "year": "2nd Year",
+      "phone": "+91 83XXX XXXXX",
+      "email": "rohit.das@nitjsr.demo.in",
+      "linkedin": "linkedin.com/in/rohit-das-demo"
+    },
+    {
+      "id": "tm9",
+      "name": "Dr. R. P. Mahto",
+      "role": "Professor",
+      "institution": "Birsa Agricultural University",
+      "department": "Agronomy",
+      "phone": "+91 82XXX XXXXX",
+      "email": "rp.mahto@bau.demo.in",
+      "experience": "17 years teaching, 12 years in post-harvest technology",
+      "pastProjects": [
+        "SIP-0798 — Tomato glut market linkage study, Ranchi",
+        "SIP-0654 — Seed storage moth-proofing trial"
+      ],
+      "linkedin": "linkedin.com/in/rp-mahto-demo"
+    },
+    {
+      "id": "tm10",
+      "name": "Kunal Soren",
+      "role": "Student",
+      "institution": "Birsa Agricultural University",
+      "department": "Agriculture (B.Sc.)",
+      "year": "3rd Year",
+      "phone": "+91 81XXX XXXXX",
+      "email": "kunal.soren@bau.demo.in",
+      "pastProjects": [
+        "SIP-0949 — Solar cold-storage field trial, Tamar"
+      ],
+      "linkedin": "linkedin.com/in/kunal-soren-demo"
+    },
+    {
+      "id": "tm20",
+      "name": "Dr. Urmila Ekka",
+      "role": "Professor",
+      "institution": "Birsa Agricultural University",
+      "department": "Soil Science",
+      "phone": "+91 80XXX XXXXX",
+      "email": "urmila.ekka@bau.demo.in",
+      "experience": "10 years teaching, 6 years in soil health mapping",
+      "pastProjects": [
+        "SIP-0863 — Soil micronutrient atlas, Gumla",
+        "SIP-0733 — Organic amendment comparison study"
+      ],
+      "linkedin": "linkedin.com/in/urmila-ekka-demo"
+    },
+    {
+      "id": "tm21",
+      "name": "Sunny Beck",
+      "role": "Student",
+      "institution": "Birsa Agricultural University",
+      "department": "Horticulture",
+      "year": "2nd Year",
+      "phone": "+91 79XXX XXXXX",
+      "email": "sunny.beck@bau.demo.in",
+      "pastProjects": [],
+      "linkedin": "linkedin.com/in/sunny-beck-demo"
+    },
+    {
+      "id": "tm11",
+      "name": "Dr. N. Jha",
+      "role": "Professor",
+      "institution": "RIMS Ranchi",
+      "department": "Community Medicine",
+      "phone": "+91 78XXX XXXXX",
+      "email": "n.jha@rimsranchi.demo.in",
+      "experience": "18 years in rural public health and epidemiology",
+      "pastProjects": [
+        "SIP-0777 — Arsenicosis screening camp network, Simdega",
+        "SIP-0640 — Tele-triage feasibility study, Palamu"
+      ],
+      "linkedin": "linkedin.com/in/n-jha-demo"
+    },
+    {
+      "id": "tm12",
+      "name": "Ayesha Khan",
+      "role": "Student",
+      "institution": "RIMS Ranchi",
+      "department": "MBBS",
+      "year": "3rd Year",
+      "phone": "+91 77XXX XXXXX",
+      "email": "ayesha.khan@rimsranchi.demo.in",
+      "pastProjects": [
+        "SIP-0951 — Village health worker training module"
+      ],
+      "linkedin": "linkedin.com/in/ayesha-khan-demo"
+    },
+    {
+      "id": "tm22",
+      "name": "Dr. S. K. Pandey",
+      "role": "Professor",
+      "institution": "RIMS Ranchi",
+      "department": "Public Health",
+      "phone": "+91 76XXX XXXXX",
+      "email": "sk.pandey@rimsranchi.demo.in",
+      "experience": "14 years teaching, 9 years in health systems research",
+      "pastProjects": [
+        "SIP-0841 — Ambulance routing optimization, Latehar",
+        "SIP-0719 — Malaria surveillance digitization"
+      ],
+      "linkedin": "linkedin.com/in/sk-pandey-demo"
+    },
+    {
+      "id": "tm23",
+      "name": "Manish Toppo",
+      "role": "Student",
+      "institution": "RIMS Ranchi",
+      "department": "B.Sc. Nursing",
+      "year": "4th Year",
+      "phone": "+91 75XXX XXXXX",
+      "email": "manish.toppo@rimsranchi.demo.in",
+      "pastProjects": [
+        "SIP-0963 — First-responder first-aid kit design"
+      ],
+      "linkedin": "linkedin.com/in/manish-toppo-demo"
+    }
+  ],
+  "stats": {
+    "totalChallenges": 7,
+    "resolved": 1,
+    "universitiesInvolved": 4
+  },
+  "$schema": "./node_modules/json-server/schema.json"
+}
